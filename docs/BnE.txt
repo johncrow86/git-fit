@@ -1,0 +1,6 @@
+Bugs:
+1) Same exercise can repeat
+
+Enhancements:
+1) Reduce the 5 API calls to one
+2) Return the split and zone with exercise name (use this to make 1 call and filter by zone and prevent exercise repeat)
