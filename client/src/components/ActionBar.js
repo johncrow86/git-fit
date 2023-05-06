@@ -15,7 +15,7 @@ function ActionBar ({ populateWorkoutList, split, repRange, workoutList, toggleJ
                 workoutList[4].id,
             ]
         }
-        const journalEntry = await fetch("http://localhost:5000/journal", {
+        const journalEntry = await fetch("http://localhost:5000/api/v1/journal", {
             method: "POST",
             headers: { "Content-TYpe": "application/json" },
             body: JSON.stringify(body)

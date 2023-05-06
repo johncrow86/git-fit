@@ -46,3 +46,20 @@ This is my first full-stack PERN app. I will be coming back to add on to this pr
 
 ## Author
 - John Crow (https://github.com/johncrow86)
+
+## ChangeLog
+- added additional constraints to the data tables
+- added a role to the database
+- renamed database.sql to db.sql and moved to new folder db
+- renamed db.js to index.js and moved to new folder db
+
+- renamed index.js to server.js
+- in server.js renamed pool to db
+- added /api/v1 to endpoints and status codes
+- updated responses to a more proper form
+- added response on failure
+- added dotenv environment variables to server
+- added start script
+
+- added enpoint to retrieve by split only
+- exercise will no longer appear twice

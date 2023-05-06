@@ -12,7 +12,7 @@ function JournalEntry({ entry, getJournal }) {
         e.preventDefault()
         const body = { notes: entryNotes }
         
-        const updatedEntry = await fetch(`http://localhost:5000/journal/${entry.id}`, {
+        const updatedEntry = await fetch(`http://localhost:5000/api/v1/journal/${entry.id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
@@ -27,7 +27,7 @@ function JournalEntry({ entry, getJournal }) {
     }
 
     async function deleteEntry(id) {
-        const deletedEntry = await fetch(`http://localhost:5000/journal/${id}`, {
+        const deletedEntry = await fetch(`http://localhost:5000/api/v1/journal/${id}`, {
             method: "DELETE"
         })
         .then(response => {
@@ -64,7 +64,7 @@ function JournalEntry({ entry, getJournal }) {
                 </div>
 
                 <div className="modal-body">
-                    <textarea type="text" value={entryNotes} style={{ width: "100%", height: "200px" }} onChange={e => setEntryNotes(e.target.value)}></textarea>
+                    <textarea type="text" value={entryNotes || ''} style={{ width: "100%", height: "200px" }} onChange={e => setEntryNotes(e.target.value)}></textarea>
                 </div>
 
                 <div className="modal-footer">
