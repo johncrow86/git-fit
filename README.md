@@ -44,6 +44,10 @@ This is my first full-stack PERN app. I will be coming back to add on to this pr
 - John Crow (https://github.com/johncrow86)
 
 ## ChangeLog
+v1.3
+- added background image
+- split and rep range buttons will now visibly show the active state
+
 v1.2
 - refactored alot of the front end code
 - added React Router

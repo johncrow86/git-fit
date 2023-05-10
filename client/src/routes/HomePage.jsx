@@ -36,7 +36,12 @@ function Home() {
             <div id="top-space" style={{ height: "200px"}}></div>
             <div className="container" style={{ border: "3px solid black"}}>
                 <div className="row bg-dark">
-                    <OptionBar setSplit={setSplit} setRepRange={setRepRange}/>
+                    <OptionBar
+                        split={split}
+                        setSplit={setSplit}
+                        repRange={repRange}
+                        setRepRange={setRepRange}
+                    />
                 </div>
                 <div className="row bg-dark">
                     <WorkoutDisplay workoutList={workoutList} repRange={repRange} />
