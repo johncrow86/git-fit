@@ -8,28 +8,22 @@ function ActionBar ({ setSplit, setRepRange }) {
             <div>
                 <label className="text-white ml-5">Select Split</label>
             </div>
-            <div className="btn-group btn-group-toggle my-3 ml-2" role="group" aria-label="Basic example">
+            <div className="btn-group btn-group-toggle my-3 ml-2" role="group">
                 <button
                     type="radio"
                     className="btn btn-secondary"
-                    name="options"
-                    id="option1"
                     onClick={()=>setSplit("Push")}>
                     Push
                 </button>
                 <button
                     type="radio"
                     className="btn btn-secondary"
-                    name="options"
-                    id="option2"
                     onClick={()=>setSplit("Pull")}>
                     Pull
                 </button>
                 <button
                     type="radio"
                     className="btn btn-secondary"
-                    name="options"
-                    id="option3"
                     onClick={()=>setSplit("Legs")}>
                     Legs
                 </button>
@@ -40,15 +34,15 @@ function ActionBar ({ setSplit, setRepRange }) {
             <div>
                 <label className="text-white">Select Rep Range</label>
             </div>
-            <div className="btn-group my-3 mr-5" role="group" aria-label="Basic example">
+            <div className="btn-group my-3 mr-5" role="group">
                 <button
-                    type="button"
+                    type="radio"
                     className="btn btn-secondary"
                     onClick={()=>setRepRange("High")}>
                     High
                 </button>
                 <button 
-                    type="button"
+                    type="radio"
                     className="btn btn-secondary"
                     onClick={()=>setRepRange("Low")}>
                     Low
