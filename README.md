@@ -22,15 +22,17 @@ The application also provides a workout log which allows users to log the curren
 
 ## Getting Started
 To use this application, follow these steps:
+Pre-Setup: A code editor with Node.js, and PostgreSQL should be installed.
 
 1. Clone the repository to your local machine.
-2. Navigate to the root directory of the project and run 'npm install' to install dependencies.
-3. Copy the database.sql file and run it in psql to set up the Postgres DB.
-4. Navigate to the server.
-5. Run the command 'node index' to start the server. Script set will also allow 'npm start'.
+2. Copy the server/db/db.sql file and run it in psql to set up the Postgres DB.
+3. Navigate to the server folder.
+4. Run 'npm install'.
+5. Run the command 'node server' to start the server.'npm start' will work if you have nodemon installed.
 6. Navigate to the client folder.
-7. Run the command 'npm start' to start the React client.
-8. Navigate to `http://localhost:3000` to use the application.
+7. Run 'npm install'.
+8. Run the command 'npm start' to start the React client.
+9. Navigate to `http://localhost:3000` to use the application.
 
 ## Future Features
 1. The 'Legs' part of the database is currently filled with mock data.
