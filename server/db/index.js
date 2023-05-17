@@ -1,7 +1,7 @@
 const { Pool } = require("pg");
 
 // Environment variables MUST be set to call pool with no arguments.
-// No need to require dotenv if the variables follow the proper naming convention.
+// No need to require dotenv if the variables follow the proper naming convention in the env file.
 const pool = new Pool();
 
 module.exports = pool;

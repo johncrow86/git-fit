@@ -4,7 +4,7 @@ import { JournalContext } from "../../context/JournalContext"
 
 function JournalEntry({ entry }) {
     const { getJournal } = useContext(JournalContext);
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     function handleView(id) {
         navigate(`/journal/${id}`);
@@ -13,7 +13,8 @@ function JournalEntry({ entry }) {
     async function handleDelete(id) {
         try {
             const response = await fetch(`http://localhost:5000/api/v1/journal/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                credentials: 'include'
             });
             getJournal();
         } catch(err) {

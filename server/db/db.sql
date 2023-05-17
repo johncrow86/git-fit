@@ -1,17 +1,40 @@
+DROP DATABASE IF EXISTS gitfit;
+DROP ROLE IF EXISTS gitfituser;
+
 CREATE DATABASE gitfit;
 
 \c gitfit
 
+CREATE EXTENSION pgcrypto;
+
 CREATE TABLE exercises (
     id VARCHAR(4) PRIMARY KEY,
-    name VARCHAR(30) UNIQUE NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     split VARCHAR(4) NOT NULL CHECK (split = 'Full' OR split = 'Push' OR split = 'Pull' OR split = 'Legs'),
     zone CHAR(1) NOT NULL CHECK (zone = '1' OR zone = '2' OR zone = '3'),
-    notes VARCHAR(50)
+    notes TEXT
 );
+
+CREATE INDEX exercises_split_idx ON exercises (split);
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username TEXT NOT NULL UNIQUE,
+    hashed_password TEXT NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION hash_password() RETURNS TRIGGER AS $$
+BEGIN
+    NEW.hashed_password := crypt(NEW.hashed_password, gen_salt('bf'));
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER hash_password_trigger BEFORE INSERT ON users FOR EACH ROW EXECUTE FUNCTION hash_password();
 
 CREATE TABLE journal (
     id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users (id),
     workout_date DATE NOT NULL DEFAULT CURRENT_DATE,
     split_option VARCHAR(4) NOT NULL CHECK (split_option = 'Full' OR split_option = 'Push' OR split_option = 'Pull' OR split_option = 'Legs'),
     rep_range_option VARCHAR(4) NOT NULL CHECK (rep_range_option = 'High' OR rep_range_option = 'Low'),
@@ -65,11 +88,17 @@ CREATE ROLE gitfituser LOGIN PASSWORD 'gitfituser';
 GRANT SELECT ON exercises TO gitfituser;
 GRANT ALL ON journal TO gitfituser;
 GRANT USAGE, SELECT ON journal_id_seq TO gitfituser;
+GRANT ALL ON users TO gitfituser;
+GRANT USAGE, SELECT ON users_id_seq TO gitfituser;
 
 -- Mock Data
-INSERT INTO journal (workout_date, split_option, rep_range_option, exercise1_id, exercise2_id, exercise3_id, exercise4_id, exercise5_id, notes)
-VALUES (CURRENT_DATE + (random() * interval '365 days'), 'Push', 'High', 'OP', 'S', 'OP', 'DL', 'BP', 'Chest day workout'),
-       (CURRENT_DATE + (random() * interval '365 days'), 'Pull', 'Low', 'Ro', 'Ro', 'OP', 'DL', 'Ro', 'Back day workout'),
-       (CURRENT_DATE + (random() * interval '365 days'), 'Push', 'High', 'DL', 'S', 'OP', 'DL', 'S', 'Chest day workout'),
-       (CURRENT_DATE + (random() * interval '365 days'), 'Legs', 'Low', 'DL', 'Ro', 'OP', 'OP', 'Ro', 'Heavy legs today'),
-       (CURRENT_DATE + (random() * interval '365 days'), 'Pull', 'High', 'S', 'DL', 'OP', 'DL', 'Ro', 'Focus on arms.');
+INSERT INTO users (username, hashed_password)
+VALUES ('user1', '11!!qqQQ'),
+       ('user2', '22@@wwWW');
+
+INSERT INTO journal (user_id, workout_date, split_option, rep_range_option, exercise1_id, exercise2_id, exercise3_id, exercise4_id, exercise5_id, notes)
+VALUES (1, CURRENT_DATE + (random() * interval '365 days'), 'Push', 'High', 'OP', 'S', 'OP', 'DL', 'BP', 'Chest day workout'),
+       (1, CURRENT_DATE + (random() * interval '365 days'), 'Pull', 'Low', 'Ro', 'Ro', 'OP', 'DL', 'Ro', 'Back day workout'),
+       (1, CURRENT_DATE + (random() * interval '365 days'), 'Push', 'High', 'DL', 'S', 'OP', 'DL', 'S', 'Chest day workout'),
+       (2, CURRENT_DATE + (random() * interval '365 days'), 'Legs', 'Low', 'DL', 'Ro', 'OP', 'OP', 'Ro', 'Heavy legs today'),
+       (2, CURRENT_DATE + (random() * interval '365 days'), 'Pull', 'High', 'S', 'DL', 'OP', 'DL', 'Ro', 'Focus on arms.');

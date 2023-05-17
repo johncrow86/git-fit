@@ -1,14 +1,17 @@
 const express = require('express');
-const router = express.Router();
 const db = require('../db/index')
-
-// Validation
 const { validateNoteMiddleware } = require('../validation')
+
+const router = express.Router();
 
 // Get All Journal Entries
 router.get('/', async (req, res) => {
     try {
-        const results = await db.query("SELECT * FROM journal ORDER BY id");
+        const userId = req.session.userId
+        const results = await db.query(
+            "SELECT * FROM journal WHERE user_id = $1 ORDER BY id",
+            [userId]
+        );
         res.json({
             status: "Success",
             results: results.rows.length,
@@ -18,7 +21,7 @@ router.get('/', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        res.status(400).send("Error")
+        res.status(400).send("Error");
     }
 })
 
@@ -57,18 +60,20 @@ router.get('/:id', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        res.status(400).send("Error")
+        res.status(400).send("Error");
     }
 })
 
 // Create Journal Entry
 router.post('/', async (req, res) => {
     try {
+        console.log()
+        const userId = req.session.userId;
         const { splitOption, repRangeOption, exercises } = req.body;
         const [ exercise1, exercise2, exercise3, exercise4, exercise5 ] = exercises;
         const newEntry = await db.query(
-            "INSERT INTO journal (split_option, rep_range_option, exercise1_id, exercise2_id, exercise3_id, exercise4_id, exercise5_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-            [splitOption, repRangeOption, exercise1, exercise2, exercise3, exercise4, exercise5]
+            "INSERT INTO journal (user_id, split_option, rep_range_option, exercise1_id, exercise2_id, exercise3_id, exercise4_id, exercise5_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+            [userId, splitOption, repRangeOption, exercise1, exercise2, exercise3, exercise4, exercise5]
         );
         res.status(201).json({
             status: "Success",
@@ -78,7 +83,7 @@ router.post('/', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        res.status(400).send("Error")
+        res.status(400).send("Error");
     }
 })
 
@@ -99,7 +104,7 @@ router.put('/:id', validateNoteMiddleware, async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        res.status(400).send("Error")
+        res.status(400).send("Error");
     }
 })
 
@@ -114,7 +119,7 @@ router.delete('/:id', async (req, res) => {
         res.status(204).json(deletedEntry.rows[0]);
     } catch (err) {
         console.error(err);
-        res.status(400).send("Error")
+        res.status(400).send("Error");
     }
 })
 

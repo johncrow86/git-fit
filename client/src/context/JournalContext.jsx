@@ -9,7 +9,9 @@ export function JournalContextProvider(props) {
     // Function to Get Journal
     async function getJournal() {
         try {
-            const response = await fetch(`http://localhost:5000/api/v1/journal`);
+            const response = await fetch(`http://localhost:5000/api/v1/journal`, {
+                credentials: 'include'
+            });
             const jsonData = await response.json();
             const journal = jsonData.data.journal;
             setJournal(journal);

@@ -11,7 +11,6 @@ The application also provides a workout log which allows users to log the curren
 - React
 - Node.js
 - Bootstrap
-- React Router
 
 ## Additional Tools Used
 - Postbird
@@ -22,8 +21,8 @@ The application also provides a workout log which allows users to log the curren
 
 ## Getting Started
 To use this application, follow these steps:
-Pre-Setup: A code editor with Node.js, and PostgreSQL should be installed.
 
+- Pre-Setup: A code editor with Node.js, and PostgreSQL should be installed.
 1. Clone the repository to your local machine.
 2. Copy the server/db/db.sql file and run it in psql to set up the Postgres DB.
 3. Navigate to the server folder.
@@ -46,11 +45,24 @@ This is my first full-stack PERN app. I will be coming back to add on to this pr
 - John Crow (https://github.com/johncrow86)
 
 ## ChangeLog
+v1.4 (login/auth update)
+- added a new table for users to the database
+- database now uses pgcrypto to hash user passwords. there is a trigger set so this will happen automatically
+- updated journal table to have the user id as a required foreign key
+
+- created users routes to handle register, login, check login, and logout
+- added validation for user creation
+- added authentication checks to access journal resources
+- added express-session to track user sessions
+
+- created a register/login page with proper validation
+- all other routes now require being logged in and will redirect to the login page
+
 v1.3
 - added background image
 - split and rep range buttons will now visibly show the active state
 
-v1.2
+v1.2 (frontend updates)
 - refactored alot of the front end code
 - added React Router
 - added Context for the journal
@@ -67,7 +79,7 @@ bug fixes
 - delete journal properly removes it from the list (bug introduced in 1.1)
 - can no longer save to journal until a workout is populated
 
-v1.1
+v1.1 (backend updates)
 - added additional constraints to the data tables
 - added a role to the database
 - renamed database.sql to db.sql and moved to new folder db

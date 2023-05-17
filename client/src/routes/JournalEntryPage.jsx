@@ -1,22 +1,32 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom"
 import JournalEntryView from "../components/JournalEntryPage/JournalEntryView";
 import JournalEntryEdit from "../components/JournalEntryPage/JournalEntryEdit";
+import { UserContext } from "../context/UserContext";
 import { validateNote } from "../utility/validation";
 
 function JournalEntryPage() {
-    const navigate = useNavigate();
-    const { id } = useParams();
     const [ display, setDisplay ] = useState('View');
     const [ notes, setNotes ] = useState('');
     // Setting the workout_date fixes an error that splice throws below. Entry will get reset on load.
     const [ entry, setEntry ] = useState({workout_date: ''});
+    const { id } = useParams();
+    const { authenticated } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    // Redirect if not authenticated
+    useEffect(() => {
+        if (!authenticated) navigate ('/login')
+    },[authenticated])
+
 
     // Load the journal entry on page load
     useEffect(() => {
         async function populateData() {
             try {
-                const response = await fetch(`http://localhost:5000/api/v1/journal/${id}`);
+                const response = await fetch(`http://localhost:5000/api/v1/journal/${id}`, {
+                    credentials: 'include'
+                });
                 const jsonData = await response.json();
                 const entry = jsonData.data.journal;
                 setEntry(entry);
@@ -45,7 +55,8 @@ function JournalEntryPage() {
             const result = await fetch(`http://localhost:5000/api/v1/journal/${entry.id}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                body: JSON.stringify(body),
+                credentials: 'include'
             })
             const jsonData = await result.json();
             const updatedEntry = jsonData.data.journal;

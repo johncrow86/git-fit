@@ -1,6 +1,7 @@
 const express = require('express');
-const router = express.Router();
 const db = require('../db/index')
+
+const router = express.Router();
 
 // Get Exercises by Split
 router.get('/:split', async (req, res) => {
@@ -19,7 +20,7 @@ router.get('/:split', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        res.status(400).send("Error")
+        res.status(400).send("Error");
     }
 })
 
@@ -40,7 +41,7 @@ router.get('/:split/:zone', async (req, res) => {
         })
     } catch (err) {
         console.error(err);
-        res.status(400).send("Error")
+        res.status(400).send("Error");
     }
 })
 

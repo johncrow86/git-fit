@@ -2,7 +2,9 @@
 async function getExercises (split) {
     try {
         // Retrieve the list of exercises by split.
-        const response = await fetch(`http://localhost:5000/api/v1/exercises/${split}`);
+        const response = await fetch(`http://localhost:5000/api/v1/exercises/${split}`, {
+            credentials: 'include'
+        });
         const jsonData = await response.json();
         const results = jsonData.data.exercises;
 

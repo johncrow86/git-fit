@@ -21,7 +21,8 @@ function ActionBar ({ populateWorkoutList, split, repRange, workoutList, toggleJ
             const result = await fetch("http://localhost:5000/api/v1/journal", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
+                body: JSON.stringify(body),
+                credentials: 'include'
             })
             const jsonData = await result.json();
             const newEntry = jsonData.data.journal;
